@@ -1,0 +1,42 @@
+{
+  "name": "NivenX",
+  "version": "1.0.0",
+  "token": "",
+  "clientId": "",
+  "mongo": "",
+  "prefix": "!",
+  "supportServer": "https://discord.gg/nivenx",
+  "inviteURL": "",
+  "owners": [],
+  "color": "#5865F2",
+  "embedColor": 5793266,
+  "features": {
+    "antinuke":    true,
+    "antiraid":    true,
+    "automod":     true,
+    "modmail":     true,
+    "music":       true,
+    "tickets":     true,
+    "suggestions": true,
+    "invites":     true,
+    "giveaways":   true,
+    "verification": true,
+    "minecraft":   true,
+    "voiceChannels": true
+  },
+  "music": {
+    "nodes": [
+      {
+        "name": "NivenX-Node",
+        "url": "localhost:2333",
+        "auth": "youshallnotpass",
+        "secure": false
+      }
+    ]
+  },
+  "modmail": {
+    "guildId": "",
+    "categoryId": "",
+    "logChannelId": ""
+  }
+}

@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NivenX — All-In-One Discord Bot</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #0e1117;
+      color: #e0e0e0;
+      min-height: 100vh;
+    }
+
+    header {
+      background: linear-gradient(135deg, #1a1d2e 0%, #0d1526 100%);
+      border-bottom: 1px solid #2a2d3e;
+      padding: 32px 40px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .logo {
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, #5865F2, #00b4ff);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+
+    .header-text h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+    }
+
+    .header-text p {
+      font-size: 14px;
+      color: #8b8fa8;
+      margin-top: 4px;
+    }
+
+    .badge {
+      margin-left: auto;
+      background: rgba(88, 101, 242, 0.15);
+      border: 1px solid rgba(88, 101, 242, 0.3);
+      color: #7289da;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 24px;
+    }
+
+    /* ── NivenX Hero Card ── */
+    .nivenx-hero {
+      background: linear-gradient(135deg, #0d1526 0%, #131a30 50%, #1a1d3e 100%);
+      border: 1px solid rgba(88, 101, 242, 0.4);
+      border-radius: 20px;
+      padding: 36px 40px;
+      margin-bottom: 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nivenx-hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #5865F2, #00b4ff, #5865F2);
+      background-size: 200% auto;
+      animation: shimmer 3s linear infinite;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+
+    .nivenx-hero-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    .nivenx-logo {
+      width: 72px;
+      height: 72px;
+      background: linear-gradient(135deg, #5865F2, #00b4ff);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      flex-shrink: 0;
+      box-shadow: 0 0 32px rgba(88,101,242,0.4);
+    }
+
+    .nivenx-title {
+      font-size: 36px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+
+    .nivenx-subtitle {
+      font-size: 15px;
+      color: #7289da;
+      margin-top: 8px;
+      font-weight: 600;
+    }
+
+    .nivenx-desc {
+      font-size: 14px;
+      color: #9a9db8;
+      line-height: 1.7;
+      margin-top: 6px;
+      max-width: 600px;
+    }
+
+    .nivenx-stats {
+      display: flex;
+      gap: 0;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+
+    .nx-stat {
+      padding: 16px 28px;
+      border-right: 1px solid rgba(88,101,242,0.2);
+      border-bottom: 1px solid rgba(88,101,242,0.2);
+    }
+
+    .nx-stat:last-child { border-right: none; }
+
+    .nx-stat-num {
+      font-size: 28px;
+      font-weight: 800;
+      color: #5865F2;
+      line-height: 1;
+    }
+
+    .nx-stat-label {
+      font-size: 11px;
+      color: #5a5d78;
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 700;
+    }
+
+    .nx-features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+
+    .nx-feat {
+      background: rgba(88,101,242,0.08);
+      border: 1px solid rgba(88,101,242,0.2);
+      color: #a0aaff;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 8px;
+    }
+
+    .nx-setup {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(88,101,242,0.15);
+      border-radius: 12px;
+      padding: 20px 24px;
+      font-size: 13px;
+      color: #9a9db8;
+      line-height: 2;
+    }
+
+    .nx-setup code {
+      background: rgba(88,101,242,0.12);
+      color: #7289da;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 12px;
+    }
+
+    /* ── Section Title ── */
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #5865F2;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(88,101,242,0.15);
+    }
+
+    /* ── Cards ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 18px;
+      margin-bottom: 48px;
+    }
+
+    .card {
+      background: #16192a;
+      border: 1px solid #232640;
+      border-radius: 16px;
+      padding: 22px;
+      transition: border-color 0.2s, transform 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      border-color: #5865F2;
+      transform: translateY(-2px);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--accent, linear-gradient(90deg, #5865F2, #7289da));
+      border-radius: 16px 16px 0 0;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .card-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+      background: rgba(88, 101, 242, 0.1);
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    .card-subtitle {
+      font-size: 11px;
+      color: #5865F2;
+      margin-top: 3px;
+      font-weight: 600;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: #9a9db8;
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .tag {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      color: #a0a3bc;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 5px;
+      letter-spacing: 0.3px;
+    }
+
+    .tag.green  { background: rgba(67,181,129,0.1); border-color: rgba(67,181,129,0.2); color: #43b581; }
+    .tag.blue   { background: rgba(88,101,242,0.1); border-color: rgba(88,101,242,0.2); color: #7289da; }
+    .tag.red    { background: rgba(240,71,71,0.1);  border-color: rgba(240,71,71,0.2);  color: #f04747; }
+    .tag.gold   { background: rgba(250,166,26,0.1); border-color: rgba(250,166,26,0.2); color: #faa61a; }
+    .tag.purple { background: rgba(149,87,235,0.1); border-color: rgba(149,87,235,0.2); color: #9557eb; }
+    .tag.cyan   { background: rgba(0,180,255,0.1);  border-color: rgba(0,180,255,0.2);  color: #00b4ff; }
+
+    .source-note {
+      font-size: 11px;
+      color: #3a3d56;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #1e2235;
+    }
+
+    footer {
+      text-align: center;
+      padding: 32px;
+      color: #3a3d56;
+      font-size: 13px;
+      border-top: 1px solid #1a1d2e;
+      margin-top: 16px;
+    }
+
+    footer a { color: #5865F2; text-decoration: none; }
+
+    @media (max-width: 600px) {
+      header { padding: 24px 20px; flex-wrap: wrap; }
+      .badge { margin-left: 0; }
+      .nivenx-hero { padding: 24px 20px; }
+      .nivenx-title { font-size: 28px; }
+      .nivenx-hero-top { flex-wrap: wrap; }
+      .nx-stat { border-right: none; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">⚡</div>
+  <div class="header-text">
+    <h1>NivenX Project</h1>
+    <p>All-In-One Discord bot — 15+ bots combined into one</p>
+  </div>
+  <div class="badge">discord.gg/nivenx</div>
+</header>
+
+<main>
+
+  <!-- NivenX Hero -->
+  <div class="nivenx-hero">
+    <div class="nivenx-hero-top">
+      <div class="nivenx-logo">⚡</div>
+      <div>
+        <div class="nivenx-title">NivenX</div>
+        <div class="nivenx-subtitle">All-In-One Discord Bot · Node.js · discord.js 14</div>
+        <div class="nivenx-desc">A single, unified Discord bot combining the full feature sets of 15+ individual bots — security, moderation, music, tickets, suggestions, invites, giveaways, modmail, verification, Minecraft utilities, and more. All in the <strong style="color:#e0e0e0;">NivenX/</strong> folder.</div>
+      </div>
+    </div>
+
+    <div class="nivenx-stats">
+      <div class="nx-stat">
+        <div class="nx-stat-num">195</div>
+        <div class="nx-stat-label">Commands</div>
+      </div>
+      <div class="nx-stat">
+        <div class="nx-stat-num">23</div>
+        <div class="nx-stat-label">Categories</div>
+      </div>
+      <div class="nx-stat">
+        <div class="nx-stat-num">15+</div>
+        <div class="nx-stat-label">Bots Merged</div>
+      </div>
+      <div class="nx-stat">
+        <div class="nx-stat-num">d.js 14</div>
+        <div class="nx-stat-label">Library</div>
+      </div>
+      <div class="nx-stat">
+        <div class="nx-stat-num">MIT</div>
+        <div class="nx-stat-label">License</div>
+      </div>
+    </div>
+
+    <div class="nx-features">
+      <span class="nx-feat">🛡️ Antinuke</span>
+      <span class="nx-feat">⚔️ Antiraid</span>
+      <span class="nx-feat">🔨 Moderation</span>
+      <span class="nx-feat">🎵 Music</span>
+      <span class="nx-feat">🎫 Tickets</span>
+      <span class="nx-feat">📨 ModMail</span>
+      <span class="nx-feat">💡 Suggestions</span>
+      <span class="nx-feat">📊 Polls</span>
+      <span class="nx-feat">🎁 Giveaways</span>
+      <span class="nx-feat">📋 Applications</span>
+      <span class="nx-feat">🔗 Invite Tracking</span>
+      <span class="nx-feat">💬 Feedback</span>
+      <span class="nx-feat">🔑 Verification</span>
+      <span class="nx-feat">⛏️ Minecraft AFK</span>
+      <span class="nx-feat">📊 MC Status</span>
+      <span class="nx-feat">🎙️ Voice Channels</span>
+      <span class="nx-feat">🏷️ Vanity Roles</span>
+      <span class="nx-feat">🏅 Guild Tags</span>
+      <span class="nx-feat">🧱 Container Builder</span>
+      <span class="nx-feat">🤖 Automod</span>
+    </div>
+
+    <div class="nx-setup">
+      <strong style="color:#e0e0e0;">Quick Start</strong> — All combined code is in the <code>NivenX/</code> folder:<br>
+      <strong style="color:#e0e0e0;">1.</strong> <code>cd NivenX</code> &nbsp;→&nbsp; <code>npm install</code><br>
+      <strong style="color:#e0e0e0;">2.</strong> Copy <code>.env.example</code> → <code>.env</code> and add your <code>DISCORD_TOKEN</code> &amp; <code>DISCORD_CLIENT_ID</code><br>
+      <strong style="color:#e0e0e0;">3.</strong> <code>npm start</code> &nbsp;·&nbsp; or &nbsp;<code>npm run start:cluster</code> for sharding<br>
+      See <code>NivenX/README.md</code> for full setup guide and command reference.
+    </div>
+  </div>
+
+  <!-- Command Categories -->
+  <div class="section-title">NivenX Command Categories (23)</div>
+  <div class="grid" style="margin-bottom: 56px;">
+
+    <div class="card" style="--accent: linear-gradient(90deg, #f04747, #ff6b6b)">
+      <div class="card-header"><div class="card-icon">🛡️</div><div><div class="card-title">Security</div><div class="card-subtitle">antinuke · antiraid · automod</div></div></div>
+      <p class="card-desc">Antinuke, antiraid, automod, whitelist, extra-owner protection. Real-time audit log monitoring with LMDB fast cache. Auto-recovers deleted channels/roles.</p>
+      <div class="tags"><span class="tag red">Antinuke</span><span class="tag red">Antiraid</span><span class="tag">LMDB</span><span class="tag">4 + 2 + 8 cmds</span></div>
+    </div>
+
+    <div class="card" style="--accent: linear-gradient(90deg, #43b581, #2ecc71)">
+      <div class="card-header"><div class="card-icon">⚔️</div><div><div class="card-title">Moderation</div><div class="card-subtitle">56 commands</div></div></div>
+      <p class="card-desc">ban, unban, kick, mute, unmute, purge, lock, unlock, hide, role, timeout, warn, nuke, slow-mode, nickname, steal emoji, and more. Infraction tracking with MongoDB.</p>
+      <div class="tags"><span class="tag green">56 commands</span><span class="tag">MongoDB</span><span class="tag">Infractions</span></div>
+    </div>
+
+    <div class="card" style="--accent: linear-gradient(90deg, #5865F2, #7289da)">
+      <div class="card-header"><div class="card-icon">ℹ️</div><div><div class="card-title">Info & Utility</div><div class="card-subtitle">info · utility</div></div></div>
+      <p class="card-desc">ping, serverinfo, userinfo, avatar, banner, botinfo, stats, uptime, invite, channelinfo, roleinfo, permissions, afk, calc, reminder, report, weather, translate.</p>
+      <div class="tags"><span class="tag blue">14 + 18 cmds</span><span class="tag">Google Translate</span><span class="tag">Math</span></div>
+    </div>
+
+    <div class="card" style="--accent: linear-gradient(90deg, #43b581, #1db954)">
+      <div class="card-header"><div class="card-icon">🎵</div><div><div class="card-title">Music</div><div class="card-subtitle">35 commands · Lavalink</div></div></div>
+      <p class="card-desc">play, skip, queue, stop, volume, loop, shuffle, seek, lyrics, grab, mood, similar, artist radio, autoplay. Full filter suite: bassboost, nightcore, vaporwave, 8D, and more.</p>
+      <div class="tags"><span class="tag green">35 commands</span><span class="tag">Shoukaku</span><span class="tag">Kazagumo</span><span class="tag">Lavalink</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon">📋</div><div><div class="card-title">Applications</div><div class="card-subtitle">2 commands</div></div></div>
+      <p class="card-desc">Create and manage multi-question server application forms. Export applicant responses. Fully slash-command driven with interactive panel.</p>
+      <div class="tags"><span class="tag blue">2 commands</span><span class="tag">Forms</span><span class="tag">Export</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon">🎫</div><div><div class="card-title">Tickets</div><div class="card-subtitle">2 commands</div></div></div>
+      <p class="card-desc">Send an interactive ticket panel. Users click to open private support channels. Close tickets with transcript generation.</p>
+      <div class="tags"><span class="tag">Panel</span><span class="tag">Close</span><span class="tag">Staff</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon">📨</div><div><div class="card-title">ModMail</div><div class="card-subtitle">1 command</div></div></div>
+      <p class="card-desc">DM-based modmail system. Users DM the bot to start a thread with staff. Close threads with /close.</p>
+      <div class="tags"><span class="tag">DMs</span><span class="tag">Staff</span><span class="tag">Threads</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon">💡</div><div><div class="card-title">Suggestions</div><div class="card-subtitle">2 commands</div></div></div>
+      <p class="card-desc">Submit suggestions with /suggest. Staff moderate with approve/deny. Configure suggestion channel, vote threshold, and logging.</p>
+      <div class="tags"><span class="tag">Components V2</span><span class="tag">Voting</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon">📊</div><div><div class="card-title">Polls</div><div class="card-subtitle">1 command</div></div></div>
+      <p class="card-desc">Create polls with up to 4 options and button-based voting. Results tracked per-user.</p>
+      <div class="tags"><span class="tag">Buttons</span><span class="tag">4 Options</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon">🎁</div><div><div class="card-title">Giveaways</div><div class="card-subtitle">3 commands</div></div></div>
+      <p class="card-desc">Create, end, and reroll giveaways. Entry management with winner selection and announcement.</p>
+      <div class="tags"><span class="tag gold">gstart · gend · greroll</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon">💬</div><div><div class="card-title">Feedback</div><div class="card-subtitle">2 commands</div></div></div>
+      <p class="card-desc">Collect star-rating feedback (1–5) with optional screenshot. Per-guild feedback channel configuration.</p>
+      <div class="tags"><span class="tag">⭐ Ratings</span><span class="tag">Screenshots</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon">🔗</div><div><div class="card-title">Invite Tracking</div><div class="card-subtitle">1 command</div></div></div>
+      <p class="card-desc">Check invite counts for any user. Join/leave tracking and leaderboard support.</p>
+      <div class="tags"><span class="tag purple">Per-user tracking</span><span class="tag">Leaderboard</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon">🔑</div><div><div class="card-title">Verification</div><div class="card-subtitle">6 commands</div></div></div>
+      <p class="card-desc">YouTube subscription verifier via Google Gemini AI. Compares user screenshots to reference screenshots. Auto-role assignment on success.</p>
+      <div class="tags"><span class="tag gold">Gemini AI</span><span class="tag">YouTube</span><span class="tag">Auto-Role</span></div>
+    </div>
+
+    <div class="card" style="--accent: linear-gradient(90deg, #43b581, #2ecc71)">
+      <div class="card-header"><div class="card-icon">⛏️</div><div><div class="card-title">Minecraft</div><div class="card-subtitle">minecraft · 4 files</div></div></div>
+      <p class="card-desc">Live Minecraft server status (auto-refresh every 5s). AFK bot: join any MC server via Discord, auto-jump, chat relay, auto-reconnect, Microsoft auth.</p>
+      <div class="tags"><span class="tag green">MC Status</span><span class="tag">AFK Bot</span><span class="tag">mineflayer</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon">🎙️</div><div><div class="card-title">Voice Channels</div><div class="card-subtitle">1 command</div></div></div>
+      <p class="card-desc">Join-to-Create temporary voice channels. Users join a designated channel to get their own VC. Lock, rename, limit, transfer.</p>
+      <div class="tags"><span class="tag">Temp VCs</span><span class="tag">Join-to-Create</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon">🏷️</div><div><div class="card-title">Vanity Roles</div><div class="card-subtitle">1 command</div></div></div>
+      <p class="card-desc">Monitor member custom statuses for configured vanity text. Auto-assign roles and send messages when users display the server tag.</p>
+      <div class="tags"><span class="tag">Status Monitor</span><span class="tag">Auto-Role</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon">🏅</div><div><div class="card-title">Guild Tags</div><div class="card-subtitle">1 command</div></div></div>
+      <p class="card-desc">Monitor member usernames for guild/clan tags. Auto-assign and remove roles as users adopt or drop the tag.</p>
+      <div class="tags"><span class="tag">Username Monitor</span><span class="tag">Auto-Role</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon">🧱</div><div><div class="card-title">Container Builder</div><div class="card-subtitle">1 command</div></div></div>
+      <p class="card-desc">Interactive Discord Components V2 container builder — no code required. 5 component types, 8 accent colors, live preview, send to any channel.</p>
+      <div class="tags"><span class="tag cyan">Components V2</span><span class="tag">Builder</span><span class="tag">No-code</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon">📝</div><div><div class="card-title">Logging</div><div class="card-subtitle">1 command</div></div></div>
+      <p class="card-desc">Server event logging — mod actions, member join/leave, message edits and deletes, channel changes.</p>
+      <div class="tags"><span class="tag">Audit Log</span><span class="tag">Mod Log</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon">👑</div><div><div class="card-title">Owner Commands</div><div class="card-subtitle">29 commands</div></div></div>
+      <p class="card-desc">Bot-owner-only commands: blacklist guilds/users, leave server, manage premium, reload commands, maintenance mode.</p>
+      <div class="tags"><span class="tag red">Owner Only</span><span class="tag">29 commands</span></div>
+    </div>
+
+  </div>
+
+  <!-- Source Bots -->
+  <div class="section-title">Source Bots (Combined into NivenX)</div>
+  <div class="grid">
+
+    <div class="card" style="--accent: linear-gradient(90deg, #f04747, #ff6b6b)">
+      <div class="card-header"><div class="card-icon">🛡️</div><div><div class="card-title">AeroX Security Bot</div><div class="card-subtitle">AeroX-Security-Bot-main · Node.js</div></div></div>
+      <p class="card-desc">High-performance antinuke &amp; security bot. Real-time audit log monitoring and automatic recovery.</p>
+      <div class="tags"><span class="tag red">Antinuke</span><span class="tag red">Antiraid</span><span class="tag blue">discord.js 14</span><span class="tag">LMDB</span></div>
+      <div class="source-note">✅ Merged into NivenX → antinuke/ antiraid/ automod/ verification/</div>
+    </div>
+
+    <div class="card" style="--accent: linear-gradient(90deg, #43b581, #2ecc71)">
+      <div class="card-header"><div class="card-icon">⚔️</div><div><div class="card-title">Guardian Moderation Bot</div><div class="card-subtitle">Guardian-Moderation-Bot-main · Node.js</div></div></div>
+      <p class="card-desc">Comprehensive moderation suite — bans, kicks, mutes, giveaways, reminders, logging, translation.</p>
+      <div class="tags"><span class="tag green">Moderation</span><span class="tag blue">discord.js 14</span><span class="tag">MongoDB</span></div>
+      <div class="source-note">✅ Merged into NivenX → moderation/ info/ utility/ logging/</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon">📋</div><div><div class="card-title">Appy Bot</div><div class="card-subtitle">Appy-Bot-main · Node.js</div></div></div>
+      <p class="card-desc">Application forms, support tickets, giveaways, and polls.</p>
+      <div class="tags"><span class="tag blue">discord.js 14</span><span class="tag">Applications</span><span class="tag">Tickets</span></div>
+      <div class="source-note">✅ Merged into NivenX → applications/ tickets/ giveaways/ polls/</div>
+    </div>
+
+    <div class="card" style="--accent: linear-gradient(90deg, #9557eb, #b388ff)">
+      <div class="card-header"><div class="card-icon">🔗</div><div><div class="card-title">Falcron</div><div class="card-subtitle">Falcron-main · Node.js</div></div></div>
+      <p class="card-desc">Invite tracking, giveaways, polls, greet messages, moderation.</p>
+      <div class="tags"><span class="tag purple">Invite Tracking</span><span class="tag blue">discord.js 14</span></div>
+      <div class="source-note">✅ Merged into NivenX → invites/ giveaways/ polls/</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon">💬</div><div><div class="card-title">Feedback Bot</div><div class="card-subtitle">Feedback-Bot-main · Node.js</div></div></div>
+      <p class="card-desc">Star-rating feedback (1–5), screenshots, per-guild channel config.</p>
+      <div class="tags"><span class="tag blue">discord.js 14</span><span class="tag">Components V2</span></div>
+      <div class="source-note">✅ Merged into NivenX → feedback/</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon">💡</div><div><div class="card-title">Suggestions Bot</div><div class="card-subtitle">Suggestions-Bot-main · Node.js</div></div></div>
+      <p class="card-desc">Full suggestion system with Components V2 and vote threshold.</p>
+      <div class="tags"><span class="tag blue">discord.js 14</span><span class="tag">Components V2</span></div>
+      <div class="source-note">✅ Merged into NivenX → suggestions/</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon">🎫</div><div><div class="card-title">TicketBot</div><div class="card-subtitle">TicketBot-main · Node.js</div></div></div>
+      <p class="card-desc">Support ticket system with panel, staff controls, transcripts.</p>
+      <div class="tags"><span class="tag blue">discord.js 14</span><span class="tag">MongoDB</span></div>
+      <div class="source-note">✅ Merged into NivenX → tickets/</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon">📨</div><div><div class="card-title">ModMail Bot</div><div class="card-subtitle">ModMail-Bot-main · Node.js</div></div></div>
+      <p class="card-desc">DM-based modmail for user–staff communication.</p>
+      <div class="tags"><span class="tag blue">discord.js 14</span><span class="tag">DMs</span></div>
+      <div class="source-note">✅ Merged into NivenX → modmail/</div>
+    </div>
+
+    <div class="card" style="--accent: linear-gradient(90deg, #faa61a, #f5a623)">
+      <div class="card-header"><div class="card-icon">🔑</div><div><div class="card-title">Verifier Bot</div><div class="card-subtitle">Verifier-Bot-main · Node.js</div></div></div>
+      <p class="card-desc">YouTube subscription verifier via Google Gemini AI vision.</p>
+      <div class="tags"><span class="tag gold">Verification</span><span class="tag purple">Gemini AI</span></div>
+      <div class="source-note">✅ Merged into NivenX → verification/</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon">📊</div><div><div class="card-title">Minecraft Status Bot</div><div class="card-subtitle">Status-Bot-main · Node.js</div></div></div>
+      <p class="card-desc">Live Minecraft server status — Components V2, auto-refresh every 5s.</p>
+      <div class="tags"><span class="tag">MC Status</span><span class="tag">Components V2</span></div>
+      <div class="source-note">✅ Merged into NivenX → minecraft/</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon">⛏️</div><div><div class="card-title">Minecraft AFK Bot</div><div class="card-subtitle">MC-AFK-BOT-main · Node.js</div></div></div>
+      <p class="card-desc">Discord-controlled Minecraft AFK bot. Microsoft OAuth, chat relay, auto-reconnect.</p>
+      <div class="tags"><span class="tag">mineflayer</span><span class="tag">Microsoft Auth</span></div>
+      <div class="source-note">✅ Merged into NivenX → minecraft/</div>
+    </div>
+
+    <div class="card" style="--accent: linear-gradient(90deg, #43b581, #1db954)">
+      <div class="card-header"><div class="card-icon">🎵</div><div><div class="card-title">Groove Music Bot</div><div class="card-subtitle">Groove-Music-main · Node.js</div></div></div>
+      <p class="card-desc">Advanced music bot with sharding, Lavalink, audio filters, lyrics.</p>
+      <div class="tags"><span class="tag green">Music</span><span class="tag">Shoukaku</span><span class="tag">Sharding</span></div>
+      <div class="source-note">✅ Merged into NivenX → music/</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon">🎙️</div><div><div class="card-title">Join2Create Bot</div><div class="card-subtitle">Join2Create-Bot-main · Python → Node.js</div></div></div>
+      <p class="card-desc">Temporary voice channel creation via Join-to-Create pattern.</p>
+      <div class="tags"><span class="tag">Voice Channels</span><span class="tag cyan">Ported to Node.js</span></div>
+      <div class="source-note">✅ Merged into NivenX → voice/</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon">🏷️</div><div><div class="card-title">VanityRoles Bot</div><div class="card-subtitle">VanityRoles-Bot-main · Python → Node.js</div></div></div>
+      <p class="card-desc">Monitor member statuses for vanity text; auto-assign roles.</p>
+      <div class="tags"><span class="tag">Auto-Roles</span><span class="tag cyan">Ported to Node.js</span></div>
+      <div class="source-note">✅ Merged into NivenX → vanityroles/</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon">🏅</div><div><div class="card-title">GuildTag Bot</div><div class="card-subtitle">GuildTag-Bot-main · Python → Node.js</div></div></div>
+      <p class="card-desc">Monitor member usernames for guild tags; auto-assign roles.</p>
+      <div class="tags"><span class="tag">Guild Tags</span><span class="tag cyan">Ported to Node.js</span></div>
+      <div class="source-note">✅ Merged into NivenX → guildtag/</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-icon">🧱</div><div><div class="card-title">Container Builder Bot</div><div class="card-subtitle">Container-Builder-main · Python → Node.js</div></div></div>
+      <p class="card-desc">Interactive Components V2 container builder. No code required.</p>
+      <div class="tags"><span class="tag cyan">Components V2</span><span class="tag">No-code</span></div>
+      <div class="source-note">✅ Merged into NivenX → builder/</div>
+    </div>
+
+  </div>
+
+</main>
+
+<footer>
+  <strong style="color:#7289da;">NivenX Project</strong> · All-In-One Discord Bot · Node.js · discord.js 14 · MIT License
+</footer>
+
+</body>
+</html>

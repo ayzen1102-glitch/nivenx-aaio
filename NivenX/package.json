@@ -1,0 +1,50 @@
+{
+  "name": "nivenx",
+  "version": "1.0.0",
+  "description": "NivenX — All-in-One Discord Bot combining security, moderation, music, tickets, invites, giveaways, modmail, suggestions, verification, Minecraft utilities, and more.",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "start:cluster": "node src/cluster.js",
+    "dev": "nodemon src/index.js"
+  },
+  "keywords": ["discord", "bot", "nivenx", "all-in-one"],
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^14.25.1",
+    "dotenv": "^16.4.5",
+    "mongoose": "^8.4.0",
+    "quickmongo": "^5.2.0",
+    "better-sqlite3": "^9.6.0",
+    "lmdb": "^3.4.3",
+    "discord-hybrid-sharding": "^3.0.1",
+    "axios": "^1.7.2",
+    "moment": "^2.30.1",
+    "ms": "^2.1.3",
+    "node-fetch": "^2.7.0",
+    "undici": "^7.22.0",
+    "ascii-table": "^0.0.9",
+    "bufferutil": "^4.0.8",
+    "utf-8-validate": "^6.0.4",
+    "dns-cache": "^2.0.0",
+    "canvacord": "^6.0.4",
+    "canvas": "^2.11.2",
+    "@iamtraction/google-translate": "^2.0.1",
+    "mathjs": "^13.1.1",
+    "generate-password": "^1.7.1",
+    "discord-html-transcripts": "^3.2.0",
+    "mineflayer": "^4.23.0",
+    "mineflayer-pathfinder": "^2.4.5",
+    "prismarine-auth": "^2.4.0",
+    "shoukaku": "^4.1.0",
+    "kazagumo": "^3.0.3",
+    "nodemon": "^3.1.4",
+    "express": "^4.19.2",
+    "fs-extra": "^11.2.0",
+    "@google/generative-ai": "^0.15.0",
+    "pg": "^8.12.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
