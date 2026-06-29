@@ -45,7 +45,7 @@ module.exports = {
     if (volume === null) {
       const volumeDisplay = new TextDisplayBuilder()
         .setContent(
-          `**Volume !**\n` +
+          `**Volume !**\n`
         );
 
       const container = new ContainerBuilder()
@@ -63,7 +63,7 @@ module.exports = {
 
     const successDisplay = new TextDisplayBuilder()
       .setContent(
-        `**Volume !**\n` +
+        `**Volume !**\n`
       );
 
     const container = new ContainerBuilder()
@@ -109,7 +109,7 @@ module.exports = {
 
       const successDisplay = new TextDisplayBuilder()
         .setContent(
-          `**Volume !**\n` +
+          `**Volume !**\n`
         );
 
       const container = new ContainerBuilder()
@@ -124,7 +124,7 @@ module.exports = {
     const createVolumeContainer = (currentVol) => {
       const volumeDisplay = new TextDisplayBuilder()
         .setContent(
-          `**Volume !**\n` +
+          `**Volume !**\n`
         );
 
       const buttons = new ActionRowBuilder().addComponents(
@@ -210,7 +210,7 @@ module.exports = {
 
         const volumeDisplay = new TextDisplayBuilder()
           .setContent(
-            `**Volume !**\n` +
+            `**Volume !**\n`
           );
 
         const finalContainer = new ContainerBuilder()

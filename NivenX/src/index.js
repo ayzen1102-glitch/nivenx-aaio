@@ -104,6 +104,7 @@ if (ClusterClient) client.cluster = new ClusterClient(client);
 client.config   = config;
 client.commands = new Collection();
 client.cools    = new Collection();
+client.owners   = Array.isArray(config.owners) ? config.owners : [];
 
 const token    = process.env.DISCORD_TOKEN || config.token;
 const mongoURL = process.env.MONGODB_URL   || config.mongo;

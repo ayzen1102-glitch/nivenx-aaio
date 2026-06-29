@@ -1,7 +1,8 @@
 const Discord = require('discord.js');
 
 const EmbedGenerator = require('../../Functions/embedGenerator');
-const { translateResponse, translateText } = require('../../Functions/translate');
+const { translateText } = require('../../Functions/translate');
+const emojis = require('../../lib/emojis');
 
 const CATEGORY_INFO = {
     administrator: {
@@ -39,6 +40,46 @@ const CATEGORY_INFO = {
         description: 'Helpful utilities',
         color: 0x5865f2,
     },
+    antinuke: {
+        emoji: '🛡️',
+        description: 'Antinuke protection',
+        color: 0xed4245,
+    },
+    giveaway: {
+        emoji: '🎉',
+        description: 'Giveaway management',
+        color: 0xfee75c,
+    },
+    economy: {
+        emoji: '💰',
+        description: 'Economy & currency',
+        color: 0x57f287,
+    },
+    fun: {
+        emoji: '🎮',
+        description: 'Fun & entertainment',
+        color: 0xeb459e,
+    },
+    music: {
+        emoji: '🎵',
+        description: 'Music playback',
+        color: 0x5865f2,
+    },
+    moderation: {
+        emoji: '🔨',
+        description: 'Moderation tools',
+        color: 0xeb459e,
+    },
+    tickets: {
+        emoji: '🎫',
+        description: 'Support tickets',
+        color: 0x5865f2,
+    },
+    minecraft: {
+        emoji: '⛏️',
+        description: 'Minecraft integration',
+        color: 0x57f287,
+    },
 };
 
 /**
@@ -56,109 +97,60 @@ function buildHelpEmbeds(commands, client, user) {
         if (!commandsByCategory.has(category)) {
             commandsByCategory.set(category, []);
         }
-        commandsByCategory.set(category, [...commandsByCategory.get(category), { name, cmd }]);
+        commandsByCategory.get(category).push({ name, cmd });
     }
 
-    // Page 1: Overview
     const overviewEmbed = new Discord.EmbedBuilder()
         .setColor(0x5865f2)
-        .setThumbnail(client.user.displayAvatarURL({ size: 256 }))
         .setAuthor({
             name: `${client.user.username} Command Center`,
             iconURL: client.user.displayAvatarURL(),
         })
-        .setTitle(`${emojis.blurple_bot || '🤖'} **Guardian Bot Help Menu**`)
-        .setDescription(`>>> **Welcome to Guardian!** ${emojis.blurple_bot || '🤖'}`)
+        .setTitle(`🤖 **NivenX Help Menu**`)
+        .setDescription(`>>> **Welcome to NivenX!** 🤖\nYour all-in-one Discord bot.`)
         .addFields(
             {
-                name: `${emojis.statistics || '📊'} **Bot Statistics**`,
+                name: `📊 **Bot Statistics**`,
                 value: `**🔢 Total Commands:** \`${commands.size}\`\n**📁 Categories:** \`${commandsByCategory.size}\`\n**🌐 Servers:** \`${client.guilds.cache.size}\`\n**👥 Users:** \`${client.users.cache.size}\``,
                 inline: true,
             },
             {
-                name: `${emojis['useful-links'] || '🔗'} **Quick Links**`,
-                value: `**${emojis.blurple_invite || '🔗'}** [Support Server](${process.env.SUPPORT_SERVER || 'https://discord.gg/support'})\n**${emojis.blurple_bot || '🤖'}** [Bot Invite](${process.env.BOT_INVITE || 'https://discord.com/oauth2/authorize?client_id=' + client.user.id})\n**${emojis.github || '📚'}** [Documentation](${process.env.DOCUMENTATION || 'https://github.com/Guardian-Discord-Bot/Guardian/wiki'})`,
+                name: `🔗 **Quick Links**`,
+                value: `**🔗** [Support Server](${process.env.SUPPORT_SERVER || 'https://discord.gg/support'})\n**🤖** [Bot Invite](https://discord.com/oauth2/authorize?client_id=${client.user.id})\n**📚** [Documentation](${process.env.DOCUMENTATION || 'https://github.com'})`,
                 inline: true,
             }
         )
         .addFields({
             name: `📁 **Command Categories**`,
             value: Array.from(commandsByCategory.entries())
-                .sort(([a], [b]) => {
-                    // Priority order: admin, moderator, backup, information, public, utility, developer
-                    const priority = [
-                        'administrator',
-                        'moderator',
-                        'backup',
-                        'information',
-                        'public',
-                        'utility',
-                        'developer',
-                    ];
-                    const aIndex = priority.indexOf(a);
-                    const bIndex = priority.indexOf(b);
-                    if (aIndex === -1 && bIndex === -1) return a.localeCompare(b);
-                    if (aIndex === -1) return 1;
-                    if (bIndex === -1) return -1;
-                    return aIndex - bIndex;
-                })
+                .sort(([a], [b]) => a.localeCompare(b))
                 .map(([category, cmds]) => {
-                    const info = CATEGORY_INFO[category] || {
-                        emoji: '📋',
-                        description: 'Commands',
-                        color: 0x95a5a6,
-                    };
+                    const info = CATEGORY_INFO[category] || { emoji: '📋', description: 'Commands' };
                     return `${info.emoji} **${category.charAt(0).toUpperCase() + category.slice(1)}** • \`${cmds.length}\` commands`;
                 })
-                .join('\n'),
+                .join('\n') || 'No categories found.',
             inline: false,
         })
         .setFooter({
-            text: `Page 1/${commandsByCategory.size + 1} • Requested by ${user.username} • Guardian Bot`,
+            text: `Page 1/${commandsByCategory.size + 1} • Requested by ${user.username} • NivenX`,
             iconURL: user.displayAvatarURL(),
         })
         .setTimestamp()
-        .setImage(
-            'https://cdn.discordapp.com/attachments/1043870997220687972/1043870998668779540/banner.png'
-        )
         .setThumbnail(client.user.displayAvatarURL({ size: 256 }));
 
     embeds.push(overviewEmbed);
 
-    // Category pages
-    const categoryOrder = [
-        'administrator',
-        'moderator',
-        'backup',
-        'information',
-        'public',
-        'utility',
-        'developer',
-    ];
-    const sortedCategories = Array.from(commandsByCategory.entries()).sort(([a], [b]) => {
-        const aIndex = categoryOrder.indexOf(a);
-        const bIndex = categoryOrder.indexOf(b);
-        if (aIndex === -1 && bIndex === -1) return a.localeCompare(b);
-        if (aIndex === -1) return 1;
-        if (bIndex === -1) return -1;
-        return aIndex - bIndex;
-    });
+    const sortedCategories = Array.from(commandsByCategory.entries()).sort(([a], [b]) => a.localeCompare(b));
 
     for (const [category, cmds] of sortedCategories) {
-        const info = CATEGORY_INFO[category] || {
-            emoji: '📋',
-            description: 'Commands',
-        };
+        const info = CATEGORY_INFO[category] || { emoji: '📋', description: 'Commands', color: 0x95a5a6 };
         const categoryName = category.charAt(0).toUpperCase() + category.slice(1);
 
         const lines = cmds
             .sort((a, b) => a.name.localeCompare(b.name))
             .map(({ name, cmd }) => {
-                const desc = cmd.data?.description || 'No description available';
-                const subCmds = cmd.subCommands
-                    ? `\n  └─ **Subcommands:** ${cmd.subCommands.map((s) => `\`${s.data.name}\``).join(' • ')}`
-                    : '';
-                return `**\`/${name}\`**\n└─ ${desc}${subCmds}`;
+                const desc = cmd.data?.description || cmd.description || 'No description available';
+                return `**\`/${name}\`**\n└─ ${desc}`;
             });
 
         const categoryEmbed = new Discord.EmbedBuilder()
@@ -170,15 +162,10 @@ function buildHelpEmbeds(commands, client, user) {
             })
             .setTitle(`${info.emoji} **${categoryName} Commands**`)
             .setDescription(
-                `>>> **${info.description}**\n\n${lines.join('\n\n')}\n\n---\n**💡 Tips:** • Click command names to copy • Use Tab for autocomplete • Hover over options for help`
+                `>>> **${info.description}**\n\n${lines.join('\n\n') || 'No commands.'}`
             )
-            .addFields({
-                name: `${emojis['useful-links'] || '�'} **Quick Actions**`,
-                value: `• \`/help\` - Return to main menu\n• \`/support\` - Get additional help\n• \`/language\` - Change language settings`,
-                inline: false,
-            })
             .setFooter({
-                text: `Page ${embeds.length + 1}/${commandsByCategory.size + 1} • Requested by ${user.username} • Guardian Bot`,
+                text: `Page ${embeds.length + 1}/${commandsByCategory.size + 1} • Requested by ${user.username} • NivenX`,
                 iconURL: user.displayAvatarURL(),
             })
             .setTimestamp()
@@ -192,41 +179,29 @@ function buildHelpEmbeds(commands, client, user) {
 
 module.exports = {
     buildHelpEmbeds,
+    enabled: true,
     data: new Discord.SlashCommandBuilder()
         .setName('help')
-        .setDescription('View all commands and categories')
+        .setDescription('View all NivenX commands and categories')
         .setDMPermission(false)
         .addStringOption((option) =>
             option
                 .setName('category')
                 .setDescription('Jump to a specific category')
                 .setRequired(false)
-                .addChoices(
-                    { name: 'Administrator', value: 'administrator' },
-                    { name: 'Backup', value: 'backup' },
-                    { name: 'Developer', value: 'developer' },
-                    { name: 'Information', value: 'information' },
-                    { name: 'Moderator', value: 'moderator' },
-                    { name: 'Public', value: 'public' },
-                    { name: 'Utility', value: 'utility' }
-                )
         ),
     /**
      * @param {Discord.ChatInputCommandInteraction} interaction
      * @param {Discord.Client} client
-     * @param {import('../../Classes/GuildsManager').GuildsManager} dbGuild
-     * @param {import('../../Classes/UsersManager').UsersManager} dbUser
      */
-    async execute(interaction, client, dbGuild, dbUser) {
-        let embeds = buildHelpEmbeds(client.commands, client, interaction.user);
+    async execute(interaction, client) {
+        const embeds = buildHelpEmbeds(client.commands, client, interaction.user);
         if (embeds.length === 0) {
-            return EmbedGenerator.errorEmbed('No commands available.');
+            return interaction.reply({ content: '❌ No commands available.', ephemeral: true });
         }
 
-        const userLang = dbUser?.language;
-
-        const categoryChoice = interaction.options.getString('category');
-        let startPage = 0;
+        const categoryChoice = interaction.options.getString('category')?.toLowerCase();
+        let page = 0;
         if (categoryChoice) {
             const categories = Array.from(
                 new Set(
@@ -236,148 +211,51 @@ module.exports = {
                 )
             ).sort();
             const idx = categories.indexOf(categoryChoice);
-            if (idx >= 0) startPage = idx + 1; // +1 because page 0 is overview
+            if (idx >= 0) page = idx + 1;
         }
 
-        const flags = [Discord.MessageFlags.Ephemeral];
+        page = Math.min(page, embeds.length - 1);
+
         if (embeds.length === 1) {
-            const payload = {
-                embeds: [embeds[0].setFooter({ text: 'Page 1/1' })],
-                flags,
-            };
-            if (interaction.deferred || interaction.replied) {
-                return await interaction.editReply(payload);
-            }
-            return await interaction.reply(payload);
+            return interaction.reply({ embeds: [embeds[0]], ephemeral: true });
         }
 
-        let page = Math.min(startPage, embeds.length - 1);
-        const updatePayload = (p) => ({
-            embeds: [
-                embeds[p].setFooter({
-                    text: `Page ${p + 1}/${embeds.length} • Requested by ${interaction.user.username}`,
-                    iconURL: interaction.user.displayAvatarURL(),
-                }),
-            ],
-            components: [
-                new Discord.ActionRowBuilder().addComponents(
-                    new Discord.ButtonBuilder()
-                        .setCustomId('help_first')
-                        .setEmoji('⏮️')
-                        .setLabel('First')
-                        .setStyle(Discord.ButtonStyle.Secondary)
-                        .setDisabled(p === 0),
-                    new Discord.ButtonBuilder()
-                        .setCustomId('help_prev')
-                        .setEmoji('◀️')
-                        .setLabel('Previous')
-                        .setStyle(Discord.ButtonStyle.Primary)
-                        .setDisabled(p === 0),
-                    new Discord.ButtonBuilder()
-                        .setCustomId('help_home')
-                        .setEmoji('🏠')
-                        .setLabel('Home')
-                        .setStyle(Discord.ButtonStyle.Success)
-                        .setDisabled(p === 0),
-                    new Discord.ButtonBuilder()
-                        .setCustomId('help_next')
-                        .setEmoji('▶️')
-                        .setLabel('Next')
-                        .setStyle(Discord.ButtonStyle.Primary)
-                        .setDisabled(p === embeds.length - 1),
-                    new Discord.ButtonBuilder()
-                        .setCustomId('help_last')
-                        .setEmoji('⏭️')
-                        .setLabel('Last')
-                        .setStyle(Discord.ButtonStyle.Secondary)
-                        .setDisabled(p === embeds.length - 1)
-                ),
-            ],
-        });
+        const makeRow = (p) => new Discord.ActionRowBuilder().addComponents(
+            new Discord.ButtonBuilder().setCustomId('help_prev').setEmoji('◀️').setLabel('Previous').setStyle(Discord.ButtonStyle.Primary).setDisabled(p === 0),
+            new Discord.ButtonBuilder().setCustomId('help_home').setEmoji('🏠').setLabel('Home').setStyle(Discord.ButtonStyle.Success).setDisabled(p === 0),
+            new Discord.ButtonBuilder().setCustomId('help_next').setEmoji('▶️').setLabel('Next').setStyle(Discord.ButtonStyle.Primary).setDisabled(p === embeds.length - 1)
+        );
 
-        const payload = { ...updatePayload(page), flags, withResponse: true };
-        const response = interaction.deferred || interaction.replied
-            ? await interaction.editReply(payload)
-            : await interaction.reply(payload);
+        const response = await interaction.reply({
+            embeds: [embeds[page]],
+            components: [makeRow(page)],
+            ephemeral: true,
+            withResponse: true,
+        });
 
         const sent = response?.resource?.message || response;
         if (!sent) return;
 
-        const filter = (i) =>
-            ['help_first', 'help_prev', 'help_next', 'help_home', 'help_last'].includes(
-                i.customId
-            ) && i.user.id === interaction.user.id;
-        const collector = sent.createMessageComponentCollector({ filter, time: 120000 });
+        const collector = sent.createMessageComponentCollector({
+            filter: (i) => ['help_prev', 'help_home', 'help_next'].includes(i.customId) && i.user.id === interaction.user.id,
+            time: 120_000,
+        });
 
         collector.on('collect', async (i) => {
-            if (i.customId === 'help_first') page = 0;
-            else if (i.customId === 'help_prev') page = Math.max(0, page - 1);
+            if (i.customId === 'help_prev') page = Math.max(0, page - 1);
             else if (i.customId === 'help_next') page = Math.min(embeds.length - 1, page + 1);
             else if (i.customId === 'help_home') page = 0;
-            else if (i.customId === 'help_last') page = embeds.length - 1;
 
-            const payload = updatePayload(page);
-            const footerText = `Page ${page + 1}/${embeds.length} • Requested by ${interaction.user.username}`;
-            const translatedFooter =
-                userLang && userLang.toLowerCase() !== 'en'
-                    ? await translateText(footerText, userLang)
-                    : footerText;
-            try {
-                await i.update({
-                    ...payload,
-                    embeds: [
-                        embeds[page].setFooter({
-                            text: translatedFooter,
-                            iconURL: interaction.user.displayAvatarURL(),
-                        }),
-                    ],
-                });
-            } catch (err) {
-                console.error('Help collector update error:', err);
-            }
+            await i.update({ embeds: [embeds[page]], components: [makeRow(page)] }).catch(() => {});
         });
 
         collector.on('end', async () => {
-            try {
-                await interaction.editReply({
-                    components: [
-                        new Discord.ActionRowBuilder().addComponents(
-                            new Discord.ButtonBuilder()
-                                .setCustomId('help_first')
-                                .setEmoji('⏮️')
-                                .setLabel('First')
-                                .setStyle(Discord.ButtonStyle.Secondary)
-                                .setDisabled(true),
-                            new Discord.ButtonBuilder()
-                                .setCustomId('help_prev')
-                                .setEmoji('◀️')
-                                .setLabel('Previous')
-                                .setStyle(Discord.ButtonStyle.Secondary)
-                                .setDisabled(true),
-                            new Discord.ButtonBuilder()
-                                .setCustomId('help_home')
-                                .setEmoji('🏠')
-                                .setLabel('Home')
-                                .setStyle(Discord.ButtonStyle.Secondary)
-                                .setDisabled(true),
-                            new Discord.ButtonBuilder()
-                                .setCustomId('help_next')
-                                .setEmoji('▶️')
-                                .setLabel('Next')
-                                .setStyle(Discord.ButtonStyle.Secondary)
-                                .setDisabled(true),
-                            new Discord.ButtonBuilder()
-                                .setCustomId('help_last')
-                                .setEmoji('⏭️')
-                                .setLabel('Last')
-                                .setStyle(Discord.ButtonStyle.Secondary)
-                                .setDisabled(true)
-                        ),
-                    ],
-                });
-            } catch {
-                // Message may have been deleted
-            }
+            const disabledRow = new Discord.ActionRowBuilder().addComponents(
+                new Discord.ButtonBuilder().setCustomId('help_prev').setEmoji('◀️').setLabel('Previous').setStyle(Discord.ButtonStyle.Secondary).setDisabled(true),
+                new Discord.ButtonBuilder().setCustomId('help_home').setEmoji('🏠').setLabel('Home').setStyle(Discord.ButtonStyle.Secondary).setDisabled(true),
+                new Discord.ButtonBuilder().setCustomId('help_next').setEmoji('▶️').setLabel('Next').setStyle(Discord.ButtonStyle.Secondary).setDisabled(true)
+            );
+            await interaction.editReply({ components: [disabledRow] }).catch(() => {});
         });
     },
 };

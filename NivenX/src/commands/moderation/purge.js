@@ -28,11 +28,13 @@ module.exports = {
         });
 
         if (!message.member.permissions.has(PermissionFlagsBits.ManageMessages))
+            return message.reply({ content: '❌ You need `Manage Messages` permission.', flags: MessageFlags.Ephemeral });
 
         if (!message.guild.members.me.permissions.has([
             PermissionFlagsBits.ManageMessages,
             PermissionFlagsBits.ReadMessageHistory,
         ]))
+            return message.reply({ content: '❌ I need `Manage Messages` and `Read Message History`.', flags: MessageFlags.Ephemeral });
 
         const type = args[0]?.toLowerCase();
         const input = args.slice(1).join(" ");
@@ -120,6 +122,7 @@ module.exports = {
 
             collector.on("end", async (_, reason) => {
                 if (reason !== "confirmed" && reason !== "cancelled")
+                    await msg.edit(reply('⏰ Timed out.', 0x26272F)).catch(() => {});
             });
         };
 
@@ -168,6 +171,7 @@ module.exports = {
                 filtered = messages.filter(m => m.content.toLowerCase().includes(keyword.toLowerCase()));
 
                 if (!filtered.size)
+                    return message.reply({ content: `❌ No messages containing **${keyword}** found.`, flags: MessageFlags.Ephemeral });
 
                 const deleted = await message.channel.bulkDelete(filtered, true).catch(() => null);
                 return message.reply(reply(

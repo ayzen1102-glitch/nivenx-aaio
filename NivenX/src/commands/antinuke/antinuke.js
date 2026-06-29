@@ -8,31 +8,33 @@ const {
     MessageFlags,
 } = require("discord.js");
 
+const ENABLED_EMOJI  = '🟢';
+const DISABLED_EMOJI = '🔴';
 
 const ANTINUKE_MODULES = [
-    { name: "Anti Channel Create",    key: "channelCreate" },
-    { name: "Anti Channel Delete",    key: "channelDelete" },
-    { name: "Anti Channel Update",    key: "channelUpdate" },
-    { name: "Anti Role Create",       key: "roleCreate" },
-    { name: "Anti Role Delete",       key: "roleDelete" },
-    { name: "Anti Role Update",       key: "roleUpdate" },
-    { name: "Anti Webhook Create",    key: "webhookCreate" },
-    { name: "Anti Webhook Delete",    key: "webhookDelete" },
-    { name: "Anti Webhook Update",    key: "webhookUpdate" },
-    { name: "Anti Guild Update",      key: "guildUpdate" },
-    { name: "Anti Integration Add",   key: "integrationAdd" },
-    { name: "Anti Integration Update",key: "integrationUpdate" },
-    { name: "Anti Integration Delete",key: "integrationDelete" },
-    { name: "Anti Ban",               key: "ban" },
-    { name: "Anti Kick",              key: "kick" },
-    { name: "Anti Unban",             key: "unban" },
-    { name: "Anti Bot Add",           key: "botAdd" },
-    { name: "Anti Everyone Ping",     key: "everyonePing" },
-    { name: "Anti Here Ping",         key: "herePing" },
-    { name: "Anti Member Role Update",key: "memberRoleUpdate" },
-    { name: "Anti Community Channel", key: "communityChannel" },
-    { name: "Anti Linked Role",       key: "linkedRole" },
-    { name: "Anti Member Prune",      key: "memberPrune" },
+    { name: "Anti Channel Create",     key: "channelCreate" },
+    { name: "Anti Channel Delete",     key: "channelDelete" },
+    { name: "Anti Channel Update",     key: "channelUpdate" },
+    { name: "Anti Role Create",        key: "roleCreate" },
+    { name: "Anti Role Delete",        key: "roleDelete" },
+    { name: "Anti Role Update",        key: "roleUpdate" },
+    { name: "Anti Webhook Create",     key: "webhookCreate" },
+    { name: "Anti Webhook Delete",     key: "webhookDelete" },
+    { name: "Anti Webhook Update",     key: "webhookUpdate" },
+    { name: "Anti Guild Update",       key: "guildUpdate" },
+    { name: "Anti Integration Add",    key: "integrationAdd" },
+    { name: "Anti Integration Update", key: "integrationUpdate" },
+    { name: "Anti Integration Delete", key: "integrationDelete" },
+    { name: "Anti Ban",                key: "ban" },
+    { name: "Anti Kick",               key: "kick" },
+    { name: "Anti Unban",              key: "unban" },
+    { name: "Anti Bot Add",            key: "botAdd" },
+    { name: "Anti Everyone Ping",      key: "everyonePing" },
+    { name: "Anti Here Ping",          key: "herePing" },
+    { name: "Anti Member Role Update", key: "memberRoleUpdate" },
+    { name: "Anti Community Channel",  key: "communityChannel" },
+    { name: "Anti Linked Role",        key: "linkedRole" },
+    { name: "Anti Member Prune",       key: "memberPrune" },
 ];
 
 module.exports = {
@@ -42,16 +44,19 @@ module.exports = {
     category: "antinuke",
     cooldown: 3,
 
-    run: async (client, message, args, prefix) => {
+    run: async (message, args, client) => {
+        const prefix = client.config?.prefix || '!';
 
-        if (!client.config.owner.includes(message.author.id) &&
-            message.guild.ownerId !== message.author.id) {
+        const isOwner = (client.owners && client.owners.includes(message.author.id)) ||
+                        (client.config?.owner && client.config.owner.includes(message.author.id));
+        if (!isOwner && message.guild.ownerId !== message.author.id) {
             return message.channel.send({
                 components: [
                     new ContainerBuilder()
                         .setAccentColor(0xFF0000)
                         .addTextDisplayComponents(
                             new TextDisplayBuilder().setContent(
+                                `${DISABLED_EMOJI} Only the server owner or bot owner can use antinuke commands.`
                             )
                         ),
                 ],
@@ -62,10 +67,13 @@ module.exports = {
         const sub     = args[0]?.toLowerCase();
         const guildId = message.guild.id;
         const key     = `antinuke_${guildId}`;
-        const isEnabled = client.lmdbGet(key) === "enabled";
 
-        const sep  = () => new SeparatorBuilder().setDivider(true).setSpacing(SeparatorSpacingSize.Small);
-        const thin = () => new SeparatorBuilder().setDivider(false).setSpacing(SeparatorSpacingSize.Small);
+        let isEnabled = false;
+        try {
+            isEnabled = (typeof client.lmdbGet === 'function') ? client.lmdbGet(key) === "enabled" : false;
+        } catch {}
+
+        const sep = () => new SeparatorBuilder().setDivider(true).setSpacing(SeparatorSpacingSize.Small);
 
         if (!sub) {
             return message.reply({
@@ -93,7 +101,10 @@ module.exports = {
         }
 
         if (sub === "status") {
-            const whitelist = client.lmdbGet(`whitelist_${guildId}`) || [];
+            let whitelist = [];
+            try {
+                whitelist = (typeof client.lmdbGet === 'function') ? (client.lmdbGet(`whitelist_${guildId}`) || []) : [];
+            } catch {}
 
             let currentPage = "status";
 
@@ -110,7 +121,7 @@ module.exports = {
                         new TextDisplayBuilder().setContent(
                             `**Protection** : ${isEnabled ? `${ENABLED_EMOJI} Active` : `${DISABLED_EMOJI} Inactive`}\n` +
                             `**Level** : ${isEnabled ? "`Maximum`" : "`None`"}\n` +
-                            `**Whitelisted Users** : \`${whitelist.length}\``
+                            `**Whitelisted Users** : \`${Array.isArray(whitelist) ? whitelist.length : 0}\``
                         )
                     )
                     .addSeparatorComponents(sep())
@@ -179,7 +190,7 @@ module.exports = {
                         new TextDisplayBuilder().setContent(
                             `**Protection** : ${isEnabled ? `${ENABLED_EMOJI} Active` : `${DISABLED_EMOJI} Inactive`}\n` +
                             `**Level** : ${isEnabled ? "`Maximum`" : "`None`"}\n` +
-                            `**Whitelisted Users** : \`${whitelist.length}\``
+                            `**Whitelisted Users** : \`${Array.isArray(whitelist) ? whitelist.length : 0}\``
                         )
                     )
                     .addSeparatorComponents(sep())
@@ -282,7 +293,7 @@ module.exports = {
                 });
             }
 
-            client.lmdbSet(key, "enabled");
+            try { if (typeof client.lmdbSet === 'function') client.lmdbSet(key, "enabled"); } catch {}
             if (!client._antinukeCache) client._antinukeCache = new Map();
             client._antinukeCache.set(guildId, true);
 
@@ -316,7 +327,7 @@ module.exports = {
                 });
             }
 
-            client.lmdbDel(key);
+            try { if (typeof client.lmdbDel === 'function') client.lmdbDel(key); } catch {}
             if (!client._antinukeCache) client._antinukeCache = new Map();
             client._antinukeCache.set(guildId, false);
 
@@ -340,6 +351,7 @@ module.exports = {
                     .setAccentColor(0x26272F)
                     .addTextDisplayComponents(
                         new TextDisplayBuilder().setContent(
+                            `❓ Unknown subcommand. Use \`${prefix}antinuke\` for usage info.`
                         )
                     ),
             ],

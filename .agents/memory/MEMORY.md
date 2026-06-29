@@ -1,0 +1,1 @@
+- [NivenX bot repair](nivenx-repair.md) — all 205 commands load cleanly; key fixes and missing files documented.

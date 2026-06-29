@@ -3,13 +3,19 @@
 module.exports = (client) => {
   client.on('messageCreate', async (message) => {
     if (message.author?.bot) return;
+    if (!message.guild) return;
 
     const config = client.config;
     const prefix = process.env.PREFIX || config.prefix || '!';
 
-    if (message.mentions.has(client.user) && !message.reference && message.content.trim() === `<@${client.user.id}>`) {
+    // Mention response
+    if (
+      message.mentions.has(client.user) &&
+      !message.reference &&
+      message.content.trim() === `<@${client.user.id}>`
+    ) {
       return message.reply({
-        content: `👋 Hi! I'm **NivenX**, an all-in-one Discord bot.\nUse \`/help\` to see all commands, or prefix \`${prefix}\` for legacy commands.`,
+        content: `👋 Hi! I'm **NivenX**, your all-in-one Discord bot.\nUse \`/help\` or \`${prefix}help\` to see all commands.`,
       }).catch(() => {});
     }
 
@@ -19,16 +25,25 @@ module.exports = (client) => {
     const commandName = args.shift()?.toLowerCase();
     if (!commandName) return;
 
-    const command = client.commands.get(commandName);
+    // Find by name or aliases
+    let command = client.commands.get(commandName);
+    if (!command) {
+      command = [...client.commands.values()].find(
+        (c) => Array.isArray(c.aliases) && c.aliases.includes(commandName)
+      );
+    }
     if (!command) return;
 
-    const run = command.run || command.execute;
-    if (typeof run !== 'function') return;
+    // Support run / execute for prefix commands
+    // run(message, args, client) is the standard
+    // execute(message, args, client) is used by Falcron/giveaway pattern
+    const runner = command.run || command.execute;
+    if (typeof runner !== 'function') return;
 
     try {
-      await run(message, args, client);
+      await runner.call(command, message, args, client);
     } catch (err) {
-      console.error(`[NivenX] Prefix command ${commandName} error:`, err.message);
+      console.error(`[NivenX] Prefix !${commandName} error:`, err.message);
       message.reply('❌ An error occurred.').catch(() => {});
     }
   });

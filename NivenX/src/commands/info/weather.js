@@ -1,13 +1,32 @@
-const Discord = require(`discord.js`);
-const weather = require(`weather-js`);
-
+const https = require('https');
+const Discord = require('discord.js');
 const EmbedGenerator = require('../../Functions/embedGenerator');
+
+/**
+ * Fetch weather data using wttr.in (no external packages required).
+ * @param {string} location
+ * @returns {Promise<object>}
+ */
+function fetchWeather(location) {
+    return new Promise((resolve, reject) => {
+        const url = `https://wttr.in/${encodeURIComponent(location)}?format=j1`;
+        https.get(url, { headers: { 'User-Agent': 'NivenX-Discord-Bot/1.0' } }, (res) => {
+            let data = '';
+            res.on('data', chunk => data += chunk);
+            res.on('end', () => {
+                try { resolve(JSON.parse(data)); }
+                catch { reject(new Error('Invalid JSON from wttr.in')); }
+            });
+        }).on('error', reject);
+    });
+}
 
 module.exports = {
     enabled: true,
     data: new Discord.SlashCommandBuilder()
         .setName('weather')
-        .setDescription('Check the weather of a state or country.')
+        .setDescription('Check the weather of a city or country.')
+        .setDMPermission(false)
         .addStringOption((option) =>
             option
                 .setName('location')
@@ -17,62 +36,64 @@ module.exports = {
     /**
      * @param {Discord.ChatInputCommandInteraction} interaction
      * @param {Discord.Client} client
-     * @param {import('../../Classes/GuildsManager').GuildsManager} dbGuild
      */
-    async execute(interaction, client, dbGuild) {
+    async execute(interaction, client) {
         const location = interaction.options.getString('location');
-        weather.find({ search: location, degreeType: 'F' }, function (err, result) {
-            if (err) {
-                console.log(err);
-                interaction.reply('There was an error while fetching the weather data.');
-                return;
-            }
-            if (!result || result.length === 0) {
-                interaction.reply(`No weather data found for ${location}.`);
-                return;
-            }
-            const current = result[0].current;
-            const loc = result[0].location || {};
-            const locationName = loc.name || location;
-            const temperature = current.temperature;
-            const feelsLike = current.feelslike;
-            const description = current.skytext;
-            const windSpeed = current.winddisplay;
-            const humidity = current.humidity;
-            const obsTime = current.observationtime || '';
-            const image = current.imageUrl || current.image || null;
+        await interaction.deferReply();
 
-            // Determine embed color based on temperature (F)
-            let color = 0x2b9af3; // default blue
-            const tempNum = Number(temperature);
-            if (!Number.isNaN(tempNum)) {
-                if (tempNum <= 32)
-                    color = 0x3aa6ff; // icy
-                else if (tempNum <= 50)
-                    color = 0x6bc6ff; // cool
-                else if (tempNum <= 68)
-                    color = 0x55d7a3; // mild
-                else if (tempNum <= 85)
-                    color = 0xffb86b; // warm
-                else color = 0xff6b6b; // hot
-            }
+        let data;
+        try {
+            data = await fetchWeather(location);
+        } catch (err) {
+            return interaction.editReply({ content: `❌ Could not fetch weather for **${location}**. Please check the location name.` });
+        }
 
-            const embed = EmbedGenerator.basicEmbed()
-                .setTitle(`Weather — ${locationName}`)
-                .setDescription(description)
-                .setColor(color)
-                .setTimestamp()
-                .addFields(
-                    { name: 'Temperature', value: `${temperature}°F`, inline: true },
-                    { name: 'Feels Like', value: `${feelsLike}°F`, inline: true },
-                    { name: 'Humidity', value: `${humidity}%`, inline: true },
-                    { name: 'Wind', value: `${windSpeed}`, inline: true },
-                    { name: 'Observed', value: `${obsTime}`, inline: true }
-                );
+        if (!data?.current_condition?.length) {
+            return interaction.editReply({ content: `❌ No weather data found for **${location}**.` });
+        }
 
-            if (image) embed.setThumbnail(image);
+        const current   = data.current_condition[0];
+        const area      = data.nearest_area?.[0];
+        const city      = area?.areaName?.[0]?.value || location;
+        const country   = area?.country?.[0]?.value || '';
+        const locationName = country ? `${city}, ${country}` : city;
 
-            interaction.reply({ embeds: [embed] });
-        });
+        const tempC     = current.temp_C;
+        const tempF     = current.temp_F;
+        const feelsC    = current.FeelsLikeC;
+        const feelsF    = current.FeelsLikeF;
+        const desc      = current.weatherDesc?.[0]?.value || 'N/A';
+        const humidity  = current.humidity;
+        const windKm    = current.windspeedKmph;
+        const windDir   = current.winddir16Point;
+        const visibility = current.visibility;
+        const uvIndex   = current.uvIndex;
+
+        const tempNum = Number(tempF);
+        let color = 0x2b9af3;
+        if (!isNaN(tempNum)) {
+            if (tempNum <= 32) color = 0x3aa6ff;
+            else if (tempNum <= 50) color = 0x6bc6ff;
+            else if (tempNum <= 68) color = 0x55d7a3;
+            else if (tempNum <= 85) color = 0xffb86b;
+            else color = 0xff6b6b;
+        }
+
+        const embed = EmbedGenerator.basicEmbed()
+            .setTitle(`🌤️ Weather — ${locationName}`)
+            .setDescription(`**${desc}**`)
+            .setColor(color)
+            .setTimestamp()
+            .addFields(
+                { name: '🌡️ Temperature', value: `${tempC}°C / ${tempF}°F`, inline: true },
+                { name: '🤔 Feels Like',  value: `${feelsC}°C / ${feelsF}°F`, inline: true },
+                { name: '💧 Humidity',    value: `${humidity}%`, inline: true },
+                { name: '🌬️ Wind',        value: `${windKm} km/h ${windDir}`, inline: true },
+                { name: '👁️ Visibility',  value: `${visibility} km`, inline: true },
+                { name: '☀️ UV Index',    value: `${uvIndex}`, inline: true }
+            )
+            .setFooter({ text: 'Powered by wttr.in' });
+
+        await interaction.editReply({ embeds: [embed] });
     },
 };

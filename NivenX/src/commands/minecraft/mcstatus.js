@@ -1,18 +1,33 @@
-const { showModal } = require('./modal');
+'use strict';
+
+const { SlashCommandBuilder } = require('discord.js');
+const { showModal } = require('./mcmodal');
 const { sendStatus } = require('./status');
 
-async function handleInteraction(interaction) {
-    try {
-        if (interaction.isChatInputCommand() && interaction.commandName === 'status') {
-            return await showModal(interaction);
-        }
+module.exports = {
+    name: 'mcstatus',
+    enabled: true,
+    category: 'Minecraft',
+    description: 'Check a Minecraft server\'s status.',
+    data: new SlashCommandBuilder()
+        .setName('mcstatus')
+        .setDMPermission(false)
+        .setDescription('Check a Minecraft server\'s online status.'),
 
+    /**
+     * @param {import('discord.js').ChatInputCommandInteraction} interaction
+     */
+    async execute(interaction) {
+        await showModal(interaction);
+    },
+
+    /**
+     * Handles the modal submission for this command.
+     * @param {import('discord.js').ModalSubmitInteraction} interaction
+     */
+    async handleModal(interaction, client) {
         if (interaction.isModalSubmit() && interaction.customId === 'mc_status_modal') {
-            return await sendStatus(interaction);
+            await sendStatus(interaction);
         }
-    } catch (error) {
-        console.error('Error handling interaction:', error);
-    }
-}
-
-module.exports = { handleInteraction };
+    },
+};

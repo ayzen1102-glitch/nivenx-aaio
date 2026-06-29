@@ -155,7 +155,7 @@ module.exports = {
         if (!args[0]) {
             const usageDisplay = new TextDisplayBuilder()
                 .setContent(
-                    `  \`${prefix}sleep 30m\` \`${prefix}sleep 1h\`\n` +
+                    `  \`${prefix}sleep 30m\` \`${prefix}sleep 1h\`\n`
                 );
 
             const container = new ContainerBuilder()
