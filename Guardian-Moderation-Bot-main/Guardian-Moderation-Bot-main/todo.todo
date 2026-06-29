@@ -1,0 +1,24 @@
+```-- Guardian
+    : Guardian's todo list
+    -- New Features
+        : Next Update???
+
+        - Alt detection system
+        - Configurable welcome & goodbye systems
+        - Add more logging options
+        - Config command to configure everything with one click
+        - Automod cases command 
+        - Starboard (perhaps, not sure yet)
+
+        - Add voice kick, deafen, voice mute, and voice move 
+        - Add more backup commands
+
+    -- Changes & Bugs
+        : Core Features
+
+        - Make logs more detailed & better formatted
+        - Fix ticket systems to actually work & make more settings with it
+        - Fix logging such as warn, to not say loading and update the embed
+    --/
+--/
+```

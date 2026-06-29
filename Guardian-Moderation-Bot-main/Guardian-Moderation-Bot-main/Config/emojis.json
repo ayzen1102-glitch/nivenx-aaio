@@ -1,0 +1,23 @@
+{
+    "emojis": {
+        "github": "💻",
+        "blurple_discord_at": "👤",
+        "blurple_bot": "🤖",
+        "blurple_invite": "🔗",
+        "blurple_employee": "👨‍💻",
+        "blurple_members": "👥",
+        "blurple_chat": "💬",
+        "nodejs": "🟢",
+        "discord_js": "🟦",
+        "blurple_lock": "🔐",
+        "blurple_link": "🔗",
+        "statistics": "📊",
+        "useful-links": "🔗",
+        "administrator": "🛡️",
+        "backup": "💾",
+        "information": "ℹ️",
+        "moderator": "🔨",
+        "public": "🌐",
+        "utility": "🛠️"
+    }
+}

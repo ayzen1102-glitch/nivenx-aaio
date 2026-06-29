@@ -1,0 +1,14 @@
+[2026-03-18 16:17:37] [INFO] [TEST] Info message
+[2026-03-18 16:17:37] [SUCCESS] [TEST] Success message
+[2026-03-18 16:17:37] [WARN] [TEST] Warning message
+[2026-03-18 16:17:37] [ERROR] [TEST] Error message
+[2026-03-18 16:19:23] [INFO] [INIT] Aerox is starting up
+[2026-03-18 16:19:23] [INFO] [DB] Opening database: database/aerox.db
+[2026-03-18 16:19:23] [SUCCESS] [DB] Database connection established
+[2026-03-18 16:19:23] [SUCCESS] [DB] Database tables verified
+[2026-03-18 16:19:23] [INFO] [INIT] Loading extensions
+[2026-03-18 16:19:23] [SUCCESS] [INIT] Loaded: commands.help
+[2026-03-18 16:19:23] [SUCCESS] [INIT] Loaded: commands.guildtag
+[2026-03-18 16:19:26] [SUCCESS] [READY] Logged in as AeroX Logger#0218 (ID: 1480159666171547839)
+[2026-03-18 16:19:26] [INFO] [READY] Serving 2 guild(s)
+[2026-03-18 16:19:26] [SUCCESS] [READY] Aerox is online and ready!

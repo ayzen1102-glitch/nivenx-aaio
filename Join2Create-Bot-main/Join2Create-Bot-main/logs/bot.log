@@ -1,0 +1,146 @@
+[2026-03-18 16:17:37] [INFO] [TEST] Info message
+[2026-03-18 16:17:37] [SUCCESS] [TEST] Success message
+[2026-03-18 16:17:37] [WARN] [TEST] Warning message
+[2026-03-18 16:17:37] [ERROR] [TEST] Error message
+[2026-03-18 16:19:23] [INFO] [INIT] Aerox is starting up
+[2026-03-18 16:19:23] [INFO] [DB] Opening database: database/aerox.db
+[2026-03-18 16:19:23] [SUCCESS] [DB] Database connection established
+[2026-03-18 16:19:23] [SUCCESS] [DB] Database tables verified
+[2026-03-18 16:19:23] [INFO] [INIT] Loading extensions
+[2026-03-18 16:19:23] [SUCCESS] [INIT] Loaded: commands.help
+[2026-03-18 16:19:23] [SUCCESS] [INIT] Loaded: commands.guildtag
+[2026-03-18 16:19:26] [SUCCESS] [READY] Logged in as AeroX Logger#0218 (ID: 1480159666171547839)
+[2026-03-18 16:19:26] [INFO] [READY] Serving 2 guild(s)
+[2026-03-18 16:19:26] [SUCCESS] [READY] Aerox is online and ready!
+[2026-03-19 08:11:41] [INFO] [INIT] Aerox is starting up
+[2026-03-19 08:11:41] [INFO] [DB] Opening database: database/aerox.db
+[2026-03-19 08:11:41] [SUCCESS] [DB] Database connection established
+[2026-03-19 08:11:41] [SUCCESS] [DB] Database tables verified
+[2026-03-19 08:11:41] [INFO] [INIT] Loading extensions
+[2026-03-19 08:11:41] [SUCCESS] [INIT] Loaded: commands.help
+[2026-03-19 08:11:41] [SUCCESS] [INIT] Loaded: commands.voicemaster
+[2026-03-19 08:11:44] [SUCCESS] [READY] Logged in as AeroX Logger#0218 (ID: 1480159666171547839)
+[2026-03-19 08:11:44] [INFO] [READY] Serving 1 guild(s)
+[2026-03-19 08:11:44] [SUCCESS] [READY] Aerox is online and ready!
+[2026-03-19 08:17:13] [INFO] [INIT] Aerox is starting up
+[2026-03-19 08:17:13] [INFO] [DB] Opening database: database/aerox.db
+[2026-03-19 08:17:13] [SUCCESS] [DB] Database connection established
+[2026-03-19 08:17:13] [SUCCESS] [DB] Database tables verified
+[2026-03-19 08:17:13] [INFO] [INIT] Loading extensions
+[2026-03-19 08:17:13] [SUCCESS] [INIT] Loaded: commands.help
+[2026-03-19 08:17:13] [SUCCESS] [INIT] Loaded: commands.voicemaster
+[2026-03-19 08:17:17] [SUCCESS] [READY] Logged in as AeroX Logger#0218 (ID: 1480159666171547839)
+[2026-03-19 08:17:17] [INFO] [READY] Serving 1 guild(s)
+[2026-03-19 08:17:17] [SUCCESS] [READY] Aerox is online and ready!
+[2026-03-19 08:18:28] [ERROR] [VM] Error in VoiceMaster setup: Incorrect number of bindings supplied. The current statement uses 8, and there are 6 supplied.
+Traceback (most recent call last):
+  File "/home/runner/workspace/commands/voicemaster.py", line 415, in setup
+    await self.bot.cxn.execute(
+  File "/home/runner/workspace/database/__init__.py", line 74, in execute
+    await self._db.execute(q, a)
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/aiosqlite/core.py", line 223, in execute
+    cursor = await self._execute(self._conn.execute, sql, parameters)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/aiosqlite/core.py", line 160, in _execute
+    return await future
+           ^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/aiosqlite/core.py", line 63, in _connection_worker_thread
+    result = function()
+             ^^^^^^^^^^
+sqlite3.ProgrammingError: Incorrect number of bindings supplied. The current statement uses 8, and there are 6 supplied.
+[2026-03-19 08:20:18] [INFO] [INIT] Aerox is starting up
+[2026-03-19 08:20:18] [INFO] [DB] Opening database: database/aerox.db
+[2026-03-19 08:20:18] [SUCCESS] [DB] Database connection established
+[2026-03-19 08:20:18] [SUCCESS] [DB] Database tables verified
+[2026-03-19 08:20:18] [INFO] [INIT] Loading extensions
+[2026-03-19 08:20:18] [SUCCESS] [INIT] Loaded: commands.help
+[2026-03-19 08:20:18] [SUCCESS] [INIT] Loaded: commands.voicemaster
+[2026-03-19 08:20:21] [SUCCESS] [READY] Logged in as AeroX Logger#0218 (ID: 1480159666171547839)
+[2026-03-19 08:20:21] [INFO] [READY] Serving 1 guild(s)
+[2026-03-19 08:20:21] [SUCCESS] [READY] Aerox is online and ready!
+[2026-03-19 08:30:15] [INFO] [INIT] Aerox is starting up
+[2026-03-19 08:30:15] [INFO] [DB] Opening database: database/aerox.db
+[2026-03-19 08:30:15] [SUCCESS] [DB] Database connection established
+[2026-03-19 08:30:15] [SUCCESS] [DB] Database tables verified
+[2026-03-19 08:30:15] [INFO] [INIT] Loading extensions
+[2026-03-19 08:30:15] [SUCCESS] [INIT] Loaded: commands.help
+[2026-03-19 08:30:15] [SUCCESS] [INIT] Loaded: commands.voicemaster
+[2026-03-19 08:30:18] [SUCCESS] [READY] Logged in as AeroX Logger#0218 (ID: 1480159666171547839)
+[2026-03-19 08:30:18] [INFO] [READY] Serving 1 guild(s)
+[2026-03-19 08:30:18] [SUCCESS] [READY] Aerox is online and ready!
+[2026-03-19 08:35:33] [INFO] [INIT] Aerox is starting up
+[2026-03-19 08:35:33] [INFO] [DB] Opening database: database/aerox.db
+[2026-03-19 08:35:33] [SUCCESS] [DB] Database connection established
+[2026-03-19 08:35:33] [SUCCESS] [DB] Database tables verified
+[2026-03-19 08:35:33] [INFO] [INIT] Loading extensions
+[2026-03-19 08:35:33] [SUCCESS] [INIT] Loaded: commands.help
+[2026-03-19 08:35:33] [SUCCESS] [INIT] Loaded: commands.voicemaster
+[2026-03-19 08:35:36] [SUCCESS] [READY] Logged in as AeroX Logger#0218 (ID: 1480159666171547839)
+[2026-03-19 08:35:36] [INFO] [READY] Serving 1 guild(s)
+[2026-03-19 08:35:36] [SUCCESS] [READY] Aerox is online and ready!
+[2026-03-19 08:50:47] [INFO] [INIT] Aerox is starting up
+[2026-03-19 08:50:47] [INFO] [DB] Opening database: database/aerox.db
+[2026-03-19 08:50:47] [SUCCESS] [DB] Database connection established
+[2026-03-19 08:50:47] [SUCCESS] [DB] Database tables verified
+[2026-03-19 08:50:47] [INFO] [INIT] Loading extensions
+[2026-03-19 08:50:47] [SUCCESS] [INIT] Loaded: commands.help
+[2026-03-19 08:50:47] [SUCCESS] [INIT] Loaded: commands.voicemaster
+[2026-03-19 08:50:50] [SUCCESS] [READY] Logged in as AeroX Logger#0218 (ID: 1480159666171547839)
+[2026-03-19 08:50:50] [INFO] [READY] Serving 1 guild(s)
+[2026-03-19 08:50:50] [SUCCESS] [READY] Aerox is online and ready!
+[2026-03-19 08:57:18] [INFO] [INIT] Aerox is starting up
+[2026-03-19 08:57:18] [INFO] [DB] Opening database: database/aerox.db
+[2026-03-19 08:57:18] [SUCCESS] [DB] Database connection established
+[2026-03-19 08:57:18] [SUCCESS] [DB] Database tables verified
+[2026-03-19 08:57:18] [INFO] [INIT] Loading extensions
+[2026-03-19 08:57:18] [SUCCESS] [INIT] Loaded: commands.help
+[2026-03-19 08:57:18] [SUCCESS] [INIT] Loaded: commands.voicemaster
+[2026-03-19 08:57:21] [SUCCESS] [READY] Logged in as AeroX Logger#0218 (ID: 1480159666171547839)
+[2026-03-19 08:57:21] [INFO] [READY] Serving 1 guild(s)
+[2026-03-19 08:57:21] [SUCCESS] [READY] Aerox is online and ready!
+[2026-03-19 08:57:39] [INFO] [INIT] Aerox is starting up
+[2026-03-19 08:57:39] [INFO] [DB] Opening database: database/aerox.db
+[2026-03-19 08:57:39] [SUCCESS] [DB] Database connection established
+[2026-03-19 08:57:39] [SUCCESS] [DB] Database tables verified
+[2026-03-19 08:57:39] [INFO] [INIT] Loading extensions
+[2026-03-19 08:57:39] [SUCCESS] [INIT] Loaded: commands.help
+[2026-03-19 08:57:39] [SUCCESS] [INIT] Loaded: commands.voicemaster
+[2026-03-19 08:57:42] [SUCCESS] [READY] Logged in as AeroX Logger#0218 (ID: 1480159666171547839)
+[2026-03-19 08:57:42] [INFO] [READY] Serving 1 guild(s)
+[2026-03-19 08:57:42] [SUCCESS] [READY] Aerox is online and ready!
+[2026-03-19 09:04:24] [ERROR] [VM] Activity start error: 'VoiceChannel' object has no attribute 'create_activity_invite'
+Traceback (most recent call last):
+  File "/home/runner/workspace/commands/voicemaster.py", line 142, in activity_select
+    invite = await channel.create_activity_invite(activity_id)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'VoiceChannel' object has no attribute 'create_activity_invite'
+[2026-03-19 09:11:25] [INFO] [INIT] Aerox is starting up
+[2026-03-19 09:11:25] [INFO] [DB] Opening database: database/aerox.db
+[2026-03-19 09:11:25] [SUCCESS] [DB] Database connection established
+[2026-03-19 09:11:25] [SUCCESS] [DB] Database tables verified
+[2026-03-19 09:11:25] [INFO] [INIT] Loading extensions
+[2026-03-19 09:11:25] [SUCCESS] [INIT] Loaded: commands.help
+[2026-03-19 09:11:25] [SUCCESS] [INIT] Loaded: commands.voicemaster
+[2026-03-19 09:11:27] [SUCCESS] [READY] Logged in as AeroX Logger#0218 (ID: 1480159666171547839)
+[2026-03-19 09:11:27] [INFO] [READY] Serving 1 guild(s)
+[2026-03-19 09:11:27] [SUCCESS] [READY] Aerox is online and ready!
+[2026-03-19 09:18:59] [INFO] [INIT] Aerox is starting up
+[2026-03-19 09:18:59] [INFO] [DB] Opening database: database/aerox.db
+[2026-03-19 09:18:59] [SUCCESS] [DB] Database connection established
+[2026-03-19 09:18:59] [SUCCESS] [DB] Database tables verified
+[2026-03-19 09:18:59] [INFO] [INIT] Loading extensions
+[2026-03-19 09:18:59] [SUCCESS] [INIT] Loaded: commands.help
+[2026-03-19 09:18:59] [SUCCESS] [INIT] Loaded: commands.voicemaster
+[2026-03-19 09:19:02] [SUCCESS] [READY] Logged in as AeroX Logger#0218 (ID: 1480159666171547839)
+[2026-03-19 09:19:02] [INFO] [READY] Serving 1 guild(s)
+[2026-03-19 09:19:02] [SUCCESS] [READY] Aerox is online and ready!
+[2026-03-19 09:19:40] [INFO] [INIT] Aerox is starting up
+[2026-03-19 09:19:40] [INFO] [DB] Opening database: database/aerox.db
+[2026-03-19 09:19:40] [SUCCESS] [DB] Database connection established
+[2026-03-19 09:19:40] [SUCCESS] [DB] Database tables verified
+[2026-03-19 09:19:40] [INFO] [INIT] Loading extensions
+[2026-03-19 09:19:40] [SUCCESS] [INIT] Loaded: commands.help
+[2026-03-19 09:19:40] [SUCCESS] [INIT] Loaded: commands.voicemaster
+[2026-03-19 09:19:43] [SUCCESS] [READY] Logged in as AeroX Logger#0218 (ID: 1480159666171547839)
+[2026-03-19 09:19:43] [INFO] [READY] Serving 1 guild(s)
+[2026-03-19 09:19:43] [SUCCESS] [READY] Aerox is online and ready!

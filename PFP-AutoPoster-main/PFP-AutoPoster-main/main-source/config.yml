@@ -1,0 +1,3 @@
+token: ""
+prefix: "!"
+db_path: "data/bot.db"

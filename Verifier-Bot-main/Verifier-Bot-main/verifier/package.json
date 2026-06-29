@@ -1,0 +1,20 @@
+{
+  "name": "aerox-verifier-bot",
+  "version": "1.0.0",
+  "description": "Discord bot that verifies YouTube subscriptions via AI vision (Google Gemini). Admins set a reference screenshot; the bot compares it against user uploads and assigns a role on match.",
+  "author": "Ayle <aerox> (https://discord.gg/aerox)",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "discord.js": "latest",
+    "dotenv": "latest",
+    "image-size": "latest",
+    "pg": "^8.21.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
